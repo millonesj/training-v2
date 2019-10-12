@@ -1,10 +1,27 @@
 # Training-v2
 
+## Como correr el proyecto:
+
+```
+git clone https://github.com/Krowdy/training-v2.git
+cd training-v2
+
+npm install
+node index.js ó nodemon index.js
+```
+
+## Tecnologias que usaremos:
+
+- Express
+- MongoDB
+- Passport
+- Hapi 
+
 ## Docs 
 
 ### Primera clase:
 
-- Que es exactamente un API? :
+- ¿Qué es exactamente un API? :
 
 https://medium.com/@perrysetgo/what-exactly-is-an-api-69f36968a41f
 

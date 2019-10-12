@@ -1,5 +1,30 @@
 # Training-v2
 
+## Docs 
+
+### Primera clase:
+
+- Que es exactamente un API? :
+
+https://medium.com/@perrysetgo/what-exactly-is-an-api-69f36968a41f
+
+- Verbos(GET, POST, PUT, etc), HTTP, URLS, API REST explicado con ejemplos:
+
+https://code.tutsplus.com/tutorials/a-beginners-guide-to-http-and-rest--net-16340
+
+
+- Por que es importante validar nuestros datos:
+
+https://www.quora.com/Why-is-data-validation-important
+
+
+
+### Segunda clase:
+- https://medium.com/vandium-software/5-easy-steps-to-understanding-json-web-tokens-jwt-1164c0adfcec 
+- https://www.syslog-ng.com/community/b/blog/posts/why-logging-is-important
+- https://www.youtube.com/watch?v=o9hT7v0OLJc
+
+
 ## Retos:
 
 ### Semana 1:

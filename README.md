@@ -7,8 +7,13 @@ git clone https://github.com/Krowdy/training-v2.git
 cd training-v2
 
 npm install
-node index.js ó nodemon index.js
+npm run start
 ```
+I can use `npm run start` or
+```
+node index.js
+```
+if you have installed nodemon in global mode run ` nodemon index.js`
 
 ## Tecnologias que usaremos:
 

@@ -18,25 +18,29 @@ productsRoutes.post('/', validateProduct, (req, res) => {
   res.json(newProduct);
 })
 
-///products/098as908asd098asd089
 productsRoutes.put('/:id', (req, res) => {
-  const filterProduct = products.filter(product => product.id === req.params.id)[0];
-
-  const updatedProduct = { ...filterProduct, ...req.body  };
-
-  res.json(updatedProduct);
+  let idProduct = req.params.id;
+  let productSearch = products.filter(product => product.id === idProduct)[0];
+  if (productSearch){
+    products = products.filter(product => product.id !== idProduct);
+    products.push({...productSearch,...req.body});
+    res.json({msg: "Updated"})
+  } else {
+    res.json({msg:"producto no existe "})
+  };
 })
 
 // DESTROY
 
 productsRoutes.delete('/:id', (req, res) => {
-  const filterProduct = products.filter(product => product.id === req.params.id)[0];
+  let productToDelete = products.filter(product => product.id === req.params.id);
 
-  const productsWithoutSelected = products.filter(product => product.id !== req.params.id)[0];
-
-  products = productsWithoutSelected;
-
-  res.json(filterProduct);
+  if (productToDelete.length) {
+    products = products.filter(product => product.id !== req.params.id)
+    res.json({msg: "product deleted succesfully",productDeleted: productToDelete});
+  } else {
+    res.json({msg:"product doesn't exist"})
+  }
 });
 
 

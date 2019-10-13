@@ -9,7 +9,7 @@ cd training-v2
 npm install
 npm run start
 ```
-I can use `npm run start` or
+You can use `npm run start` or
 ```
 node index.js
 ```

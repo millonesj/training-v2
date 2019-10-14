@@ -26,7 +26,7 @@ productsRoutes.put('/:id', (req, res) => {
     products.push({...productSearch,...req.body});
     res.json({msg: "Updated"})
   } else {
-    res.json({msg:"producto no existe "})
+    res.json({msg:"producto no exist "})
   };
 })
 

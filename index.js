@@ -1,5 +1,6 @@
 const express = require('express');
 const productsRoutes = require('./resources/productos/products.routes');
+const usersRouters = require('./resources/users/users.routes');
 const app = express();
 const PORT = 4000;
 
@@ -7,6 +8,7 @@ app.use(express.json())
 
 /* routes */
 app.use('/products', productsRoutes);
+app.use('/users', usersRouters);
 
 app.get('/', (req, res) => {
   res.status(200).send('Welcome Krowders');

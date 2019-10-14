@@ -13,7 +13,16 @@ const products = [
   },
 ]
 
-const users = [];
+const users = [{
+  id: '1bf5g1hfg1h51gfh6',
+  name: 'Antonio',
+  nikname: 'lymifa'
+},
+{
+  id:'4jt4j4fg5j45g4j5g4',
+  name: 'Jordy',
+  nikname: 'apple'
+}];
 
 // Trailing comma
 module.exports = {

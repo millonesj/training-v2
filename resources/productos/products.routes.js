@@ -1,11 +1,7 @@
 const express = require('express')
 const uuidv4 = require('uuid/v4');
-
-
 const validateProduct = require('./products.validate');
-
 let products = require('../../db').products;
-
 const productsRoutes = express.Router()
 
 productsRoutes.get('/', (req, res) => {

@@ -1,12 +1,13 @@
 const express = require('express');
 const uuid = require('uuid/v4');
-let users = require('../../db').users;
 const router = express.Router();
+const userValidate = require('./users.validate');
+let users = require('../../db').users;
 router.get('/', (req, res) => {
   res.json(users);
 });
 
-router.post('/', (req, res) => {
+router.post('/', userValidate, (req, res) => {
   let newUser = {...req.body, id:uuid()};
   users.push(newUser);
   res.json(newUser);

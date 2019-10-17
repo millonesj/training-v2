@@ -1,6 +1,6 @@
 const Joi = require('@hapi/joi');
 const UserSchema = Joi.object({
-  name: Joi.string().alphanum().min(2).max(100).required(),
+  name: Joi.string().pattern(/^[a-zA-Z\s]+$/).min(2).max(100).required(),
   nickname: Joi.string().alphanum().min(2).max(50).required()
 });
 

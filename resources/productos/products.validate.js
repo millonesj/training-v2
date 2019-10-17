@@ -16,7 +16,7 @@ const validateAddProduct = (req, res, next) => {
   for (let index = 0; index < users.length; index++) 
     if (users[index].id == req.body.owner) return next();
 
-  return res.status(403).send("User doesn't exist");
+  return res.status(403).send("owner/user doesn't exist");
 
 }
 
@@ -24,7 +24,8 @@ const validateUpdateProduct = (req, res, next) => {
   const validation = productSchema.validate(req.body);
   const productDB = products.filter(product => product.id === req.params.id)[0];
   if (validation.error) return res.status(403).json({"message": "Invalid data, please validate"});
-  if (productDB.owner !== req.body.owner)return res.status(401).send('Unauthorized for update or delete this product');
+  if (productDB)
+    if (productDB.owner !== req.body.owner)return res.status(401).send('Unauthorized for update or delete this product');
 
   next();
 

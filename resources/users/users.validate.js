@@ -6,7 +6,7 @@ const UserSchema = Joi.object({
 
 const validateUser = (req, res, next) => {
   const validation = UserSchema.validate(req.body);
-  if (validation.error) return res.status(403).json({"message": "Data is wrong, please validate"})
+  if (validation.error) return res.status(403).json({"message": "Invalid data, please validate"})
 
   next()
 }

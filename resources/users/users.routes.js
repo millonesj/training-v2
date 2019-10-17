@@ -25,9 +25,9 @@ router.put('/:id', (req, res) => {
     }
 
   if (exist) {
-    res.json({"msg": "User updated"})
+    res.json({"message": "User updated"})
   }else{
-    res.json({"msg": "user doesn't exist"})
+    res.json({"message": "user doesn't exist"})
   }
 });
 
@@ -41,9 +41,9 @@ router.delete('/:id', (req, res) => {
     }
   }
   if (deleted) {
-    res.json({"msg": "User deleted succesfully"})
+    res.json({"message": "User deleted succesfully"})
   } else {
-    res.json({"msg": "User doesn't exist"})
+    res.json({"message": "User doesn't exist"})
   }
 })
 

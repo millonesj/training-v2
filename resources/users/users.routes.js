@@ -14,36 +14,23 @@ router.post('/', userValidate, (req, res) => {
 })
 
 router.put('/:id', (req, res) => {
-  let  exist = false;
-
-    for (let index = 0; index < users.length; index++) {
-      if (users[index].id === req.params.id) {
-        users[index] =  {...users[index],...req.body}
-        exist = true;
-        break;
-      }
-    }
-
-  if (exist) {
-    res.json({"message": "User updated"})
-  }else{
+  let userIndexSearched  = users.findIndex(user => user.id === req.params.id)
+  if (userIndexSearched === -1) {
     res.json({"message": "user doesn't exist"})
+  } else {
+    users[userIndexSearched] =  {...users[userIndexSearched],...req.body}
+    res.json({"message": "User updated"})
   }
+
 });
 
 router.delete('/:id', (req, res) => {
-  let deleted = false;
-  for (let index = 0; index < users.length; index++) {
-    if (users[index].id === req.params.id) {
-      users.splice(index,1);
-      deleted = true;
-      break;
-    }
-  }
-  if (deleted) {
-    res.json({"message": "User deleted succesfully"})
-  } else {
+  let userIndexSearched  = users.findIndex(user => user.id === req.params.id)
+  if (userIndexSearched === -1) {
     res.json({"message": "User doesn't exist"})
+  } else {
+    users.splice(userIndexSearched,1);
+    res.json({"message": "User deleted succesfully"})
   }
 })
 

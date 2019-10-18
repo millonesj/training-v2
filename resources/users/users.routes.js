@@ -3,6 +3,7 @@ const uuid = require('uuid/v4');
 const router = express.Router();
 const userValidate = require('./users.validate');
 let users = require('../../db').users;
+
 router.get('/', (req, res) => {
   res.json(users);
 });

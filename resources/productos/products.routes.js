@@ -1,6 +1,6 @@
 const express = require('express')
 const uuidv4 = require('uuid/v4');
-const {validateAddProduct, validateUpdateProduct} = require('./products.validate');
+const {validateAdd, validateUpdate, validateDelete} = require('./products.validate');
 let products = require('../../db').products;
 const productsRoutes = express.Router()
 
@@ -8,13 +8,13 @@ productsRoutes.get('/', (req, res) => {
   res.json(products);
 });
 
-productsRoutes.post('/', validateAddProduct, (req, res) => {
+productsRoutes.post('/', validateAdd, (req, res) => {
   const newProduct = { ...req.body, id: uuidv4() };
   products.push(newProduct);
   res.json(newProduct);
 })
 
-productsRoutes.put('/:id', validateUpdateProduct, (req, res) => {
+productsRoutes.put('/:id', validateUpdate, (req, res) => {
   let idProduct = req.params.id;
   let productSearch = products.filter(product => product.id === idProduct)[0];
   if (productSearch){
@@ -28,7 +28,7 @@ productsRoutes.put('/:id', validateUpdateProduct, (req, res) => {
 
 // DESTROY
 
-productsRoutes.delete('/:id', (req, res) => {
+productsRoutes.delete('/:id', validateDelete, (req, res) => {
   let productToDelete = products.filter(product => product.id === req.params.id);
 
   if (productToDelete.length) {

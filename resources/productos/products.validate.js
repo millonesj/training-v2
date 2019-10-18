@@ -9,7 +9,7 @@ const productSchema = Joi.object({
   owner: Joi.required(),
 });
 
-const validateAddProduct = (req, res, next) => {
+const validateAdd  = (req, res, next) => {
   const validation = productSchema.validate(req.body);
   if (validation.error) return res.status(403).json({"message": "Invalid data, please validate"});
 
@@ -20,7 +20,7 @@ const validateAddProduct = (req, res, next) => {
 
 }
 
-const validateUpdateProduct = (req, res, next) => {
+const validateUpdate = (req, res, next) => {
   const validation = productSchema.validate(req.body);
   const productDB = products.filter(product => product.id === req.params.id)[0];
   if (validation.error) return res.status(403).json({"message": "Invalid data, please validate"});
@@ -31,7 +31,18 @@ const validateUpdateProduct = (req, res, next) => {
 
 }
 
+const validateDelete = (req, res, next) => {
+  const productDB = products.filter(product => product.id === req.params.id)[0];
+  if (productDB)
+    if (productDB.owner !== req.body.owner)return res.status(401).send('Unauthorized for update or delete this product');
+
+  next();
+
+}
+
+
 module.exports = {
-  validateAddProduct,
-  validateUpdateProduct
+  validateAdd,
+  validateUpdate,
+  validateDelete
 };

@@ -42,10 +42,18 @@ https://www.quora.com/Why-is-data-validation-important
 - https://www.youtube.com/watch?v=o9hT7v0OLJc
 
 
-## Retos:
+## Tareas:
 
 ### Semana 1:
 
 Hacer las routas CRUD para el resource 'users'. El usuario debe tener los campos `name`, `id`, `nickname`. 
 Tener en cuenta que ahora los productos deberan tener un campo `owner`. 
 Hacer la lógica correspondiente para validar que los productos tengan un owner al crearlos, que solo el mismo owner pueda modificar el producto y que solo el mismo owner pueda eliminar su producto.
+
+### Semana 2:
+- Colocar los logger en todos los endpoints, para todas las situaciones.
+
+## Reto:
+Implementar todo lo avanzado en otro lenguaje con otro framework. (No vale PHP)
+
+

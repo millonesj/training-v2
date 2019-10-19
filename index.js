@@ -1,36 +1,22 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const winston = require('winston');
 const morgan = require('morgan');
 
+const passport = require('passport');
+
+// const BasicStrategy = require('passport-http').BasicStrategy;
+
 const productsRoutes = require('./resources/productos/products.routes');
+const usersRoutes = require('./resources/users/users.routes');
+
+const logger = require('./resources/lib/logger');
 
 const app = express();
 
 
 app.use(bodyParser.json())
 
-const logger = new (winston.Logger)({
-  transports: [
-    new winston.transports.File({
-      level: 'info',
-      json: false,
-      handleExceptions: true,
-      maxSize: 512000,
-      maxFiles: 5,
-      filename: `${__dirname}/log-de-aplicacion.log`,
-      prettyPrint: object => { return JSON.stringify(object) }
-    }),
-    new winston.transports.Console({
-      level: 'debug',
-      handleExceptions: true,
-      json: false,
-      colorize: true,
-      prettyPrint: object => { return JSON.stringify(object) }
-    })
-  ]
-})
 
 app.use(morgan('short', {
   stream: {
@@ -38,10 +24,19 @@ app.use(morgan('short', {
   }
 }));
 
+// passport.use(new BasicStrategy((user, password, done) => {
+//   if (user === 'luis' && password === 'krowdy123') {
+//     return done(null, true);
+//   } else {
+//     return done(null, false);
+//   }
+// }))
+
+// app.use(passport.initialize())
+
+
 app.use('/products', productsRoutes);
-
-
-
+app.use('/users', usersRoutes);
 
 // SON EJEMPLOS
 // logger.log('log', 'Hello distributed log files!');
@@ -51,6 +46,7 @@ app.use('/products', productsRoutes);
 
 /************************** */
 // READ
+//  passport.authenticate('basic', { session: false })
 app.get('/', (req, res) => {
   res.status(200).send('Hola papu');
 });

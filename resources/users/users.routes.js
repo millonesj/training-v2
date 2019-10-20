@@ -1,5 +1,7 @@
 const express = require('express');
 const uuid = require('uuid/v4');
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken');
 const router = express.Router();
 const userValidate = require('./users.validate');
 let users = require('../../db').users;
@@ -9,7 +11,9 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', userValidate, (req, res) => {
-  let newUser = {...req.body, id:uuid()};
+  let newUser = {...req.body, id:uuid(), password: hashPassword};
+  const hashPassword = bcrypt.hashSync(req.body.password, 10)
+
   users.push(newUser);
   res.json(newUser);
 })
@@ -32,6 +36,23 @@ router.delete('/:id', (req, res) => {
   } else {
     users.splice(userIndexSearched,1);
     res.json({"message": "User deleted succesfully"})
+  }
+})
+
+router.post('/login', (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+
+  const user = users.filter(user => user.username === username)[0]
+
+  const isAuthenticated = bcrypt.compareSync(password, user.password);
+
+  if (isAuthenticated) {
+    const token = jwt.sign({ id: user.id }, 'SECRET_KEY', { expiresIn: '10h' })
+
+    res.json({ token })
+  } else {
+    res.status(401).send('Verifica tu password');
   }
 })
 

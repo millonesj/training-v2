@@ -18,12 +18,14 @@ const products = [
 const users = [{
   id: '1bf5g1hfg1h51gfh6',
   name: 'Antonio',
-  nickname: 'lymifa'
+  username: "antonio",
+  password: "$2b$10$XzgYHzLYoaqeY5o74dQm0.H6EoO8EX3GlWv14L856nFWs.A6pt4ym",
 },
 {
   id:'4jt4j4fg5j45g4j5g4',
   name: 'Jordy',
-  nickname: 'apple'
+  username: "jordi",
+  password: "$2b$10$XzgYHzLYoaqeY5o74dQm0.H6EoO8EX3GlWv14L856nFWs.A6pt4ym",
 }];
 
 // Trailing comma

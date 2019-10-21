@@ -1,27 +1,11 @@
 const express = require('express');
 const morgan = require('morgan');
-const passport = require('passport');
-const authJWT = require('passport-jwt');
 
 const productsRoutes = require('./resources/productos/products.routes');
 const usersRoutes = require('./resources/users/users.routes');
 
 const logger = require('./resources/lib/logger');
-
-const jwtOptions = {
-  secretOrKey: 'SECRET_KEY',
-  jwtFromRequest: authJWT.ExtractJwt.fromAuthHeaderAsBearerToken()
-}
-
-let jwtStrategy = new authJWT.Strategy({ ...jwtOptions },(jwtPayload, next) => {
-  // usuarioDelPayLoad
-  console.log(jwtPayload)
-  next(null, {
-    id: jwtPayload.id
-  });
-})
-
-passport.use(jwtStrategy)
+const auth = require('./resources/lib/authentication');
 
 const app = express();
 const PORT = 4000;
@@ -38,7 +22,7 @@ app.use(morgan('short', {
 app.use('/products', productsRoutes);
 app.use('/users', usersRoutes);
 
-app.get('/', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.get('/', auth, (req, res) => {
   res.status(200).send('Welcome Krowders');
 })
 

@@ -1,24 +1,25 @@
 const express = require('express');
 const uuid = require('uuid/v4');
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const router = express.Router();
 const userValidate = require('./users.validate');
 let users = require('../../db').users;
+const auth = require('../../resources/lib/authentication');
+const router = express.Router();
 
-router.get('/', (req, res) => {
+router.get('/', auth,(req, res) => {
   res.json(users);
 });
 
 router.post('/', userValidate, (req, res) => {
-  let newUser = {...req.body, id:uuid(), password: hashPassword};
   const hashPassword = bcrypt.hashSync(req.body.password, 10)
+  let newUser = {...req.body, id:uuid(), password: hashPassword};
 
   users.push(newUser);
   res.json(newUser);
 })
 
-router.put('/:id', (req, res) => {
+router.put('/:id', auth, (req, res) => {
   let userIndexSearched  = users.findIndex(user => user.id === req.params.id)
   if (userIndexSearched === -1) {
     res.json({"message": "user doesn't exist"})
@@ -29,7 +30,7 @@ router.put('/:id', (req, res) => {
 
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', auth, (req, res) => {
   let userIndexSearched  = users.findIndex(user => user.id === req.params.id)
   if (userIndexSearched === -1) {
     res.json({"message": "User doesn't exist"})
@@ -42,18 +43,21 @@ router.delete('/:id', (req, res) => {
 router.post('/login', (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
+  const userSearched = users.filter(user => user.username === username)[0];
+  if (userSearched) {
 
-  const user = users.filter(user => user.username === username)[0]
+    const isAuthenticated = bcrypt.compareSync(password, userSearched.password);
+    if (isAuthenticated) {
+      const token = jwt.sign({ id: userSearched.id }, 'SECRET_KEY', { expiresIn: '10h' })
+      res.json({ token })
+    } else {
+      res.status(401).send('incorrect username or password');
+    }
 
-  const isAuthenticated = bcrypt.compareSync(password, user.password);
-
-  if (isAuthenticated) {
-    const token = jwt.sign({ id: user.id }, 'SECRET_KEY', { expiresIn: '10h' })
-
-    res.json({ token })
   } else {
-    res.status(401).send('Verifica tu password');
+    res.json({message:"user doesn't exist"})
   }
-})
 
-module.exports = router
+});
+
+module.exports = router;

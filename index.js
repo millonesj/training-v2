@@ -19,10 +19,10 @@ app.use(morgan('short', {
 }));
 
 /* routes */
-app.use('/products', productsRoutes);
+app.use('/products', auth, productsRoutes);
 app.use('/users', usersRoutes);
 
-app.get('/', auth, (req, res) => {
+app.get('/', (req, res) => {
   res.status(200).send('Welcome Krowders');
 })
 

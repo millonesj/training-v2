@@ -1,16 +1,44 @@
 const express = require('express');
 const morgan = require('morgan');
+const passport = require('passport');
+const authJWT = require('passport-jwt');
+
+const config = require('./config')
+
+const jwtOptions = {
+  secretOrKey: 'SECRET_KEY',
+  jwtFromRequest: authJWT.ExtractJwt.fromAuthHeaderAsBearerToken()
+}
+
+let jwtStrategy = new authJWT.Strategy({ ...jwtOptions },(jwtPayload, next) => {
+  // usuarioDelPayLoad
+  console.log(jwtPayload)
+  next(null, {
+    id: jwtPayload.id
+  });
+})
+
+passport.use(jwtStrategy)
 
 const productsRoutes = require('./resources/productos/products.routes');
 const usersRoutes = require('./resources/users/users.routes');
 
 const logger = require('./resources/lib/logger');
 const auth = require('./resources/lib/authentication');
+const mongoose = require('mongoose')
 
 const app = express();
 const PORT = 4000;
 
 app.use(express.json())
+
+mongoose.connect('mongodb://127.0.0.1:27017/training', { useNewUrlParser: true });
+mongoose.connection.on('error', (error) => {
+  console.log('==========================')
+  logger.error(error);
+  logger.error('Fallo la conexion a mongodb');
+  process.exit(1);
+});
 
 app.use(morgan('short', {
   stream: {
@@ -47,6 +75,6 @@ app.get('/', (req, res) => {
 // READ
 //  passport.authenticate('basic', { session: false })
 
-app.listen(PORT, () => {
-  console.log(`We app is listening on port: ${PORT}`);
+app.listen(config.PORT, () => {
+  console.log(`We app is listening on port: ${config.PORT}`);
 })

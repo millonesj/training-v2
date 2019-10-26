@@ -6,8 +6,7 @@ const morgan = require('morgan');
 const passport = require('passport');
 const authJWT = require('passport-jwt');
 
-
-// passport.use(authJWT)
+const config = require('./config')
 
 const jwtOptions = {
   secretOrKey: 'SECRET_KEY',
@@ -28,9 +27,18 @@ const productsRoutes = require('./resources/productos/products.routes');
 const usersRoutes = require('./resources/users/users.routes');
 
 const logger = require('./resources/lib/logger');
+const mongoose = require('mongoose')
 
 const app = express();
 
+
+mongoose.connect('mongodb://127.0.0.1:27017/training', { useNewUrlParser: true });
+mongoose.connection.on('error', (error) => {
+  console.log('==========================')
+  logger.error(error);
+  logger.error('Fallo la conexion a mongodb');
+  process.exit(1);
+});
 
 app.use(bodyParser.json())
 
@@ -86,10 +94,6 @@ app.delete('/', () => {})
 // Read
 // Update
 // Destroy
-
-
-const PORT = 3000;
-
-app.listen(PORT, () => {
-  console.log(`Nuestra app esta escuchando el puerto ${PORT}`);
+app.listen(config.PORT, () => {
+  console.log(`Nuestra app esta escuchando el puerto ${config.PORT}`);
 })

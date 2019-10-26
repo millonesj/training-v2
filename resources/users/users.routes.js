@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt')
 
 const jwt = require('jsonwebtoken');
 
+const config = require('../../config')
 let users = require('../../db').users;
 
 const usersRoutes = express.Router()
@@ -31,7 +32,7 @@ usersRoutes.post('/login', (req, res) => {
   const isAuthenticated = bcrypt.compareSync(password, user.password);
 
   if (isAuthenticated) {
-    const token = jwt.sign({ id: user.id }, 'SECRET_KEY', { expiresIn: '10h' })
+    const token = jwt.sign({ id: user.id }, config.SECRET_KEY, { expiresIn: config.EXPIRES_IN })
 
     res.json({ token })
   } else {

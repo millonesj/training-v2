@@ -23,28 +23,27 @@ passport.use(jwtStrategy)
 const productsRoutes = require('./resources/productos/products.routes');
 const usersRoutes = require('./resources/users/users.routes');
 
-const logger = require('./resources/lib/logger');
+const {logger} = require('./resources/lib/logger');
 const auth = require('./resources/lib/authentication');
 const mongoose = require('mongoose')
 
 const app = express();
 const PORT = 4000;
 
-app.use(express.json())
+app.use(express.json());
 
 mongoose.connect('mongodb://127.0.0.1:27017/training', { useNewUrlParser: true });
+mongoose.set('useFindAndModify', false);
+
 mongoose.connection.on('error', (error) => {
-  console.log('==========================')
-  logger.error(error);
-  logger.error('Fallo la conexion a mongodb');
+  logger.error('Failed to connect to database', error);
   process.exit(1);
 });
 
-app.use(morgan('short', {
-  stream: {
-    write: message => logger.info(message.trim()),
-  }
-}));
+app.use(morgan('{"remote_addr": ":remote-addr", "remote_user": ":remote-user", "date": ":date[clf]", "method": ":method", "url": ":url", "http_version": ":http-version", "status": ":status", "result_length": ":res[content-length]", "referrer": ":referrer", "user_agent": ":user-agent", "response_time": ":response-time"}', {
+  stream: logger.stream}));
+
+app.use((req,res,next) => logger.saveParams(req,res,next));
 
 /* routes */
 app.use('/products', auth, productsRoutes);

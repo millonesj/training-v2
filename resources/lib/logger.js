@@ -1,24 +1,48 @@
-const winston = require('winston');
+const { createLogger, format, transports } = require('winston');
+const logger = createLogger({
 
-const logger = new (winston.Logger)({
+  format: format.json(),
+  /* defaultMeta: {service: 'shop-api'}, */
   transports: [
-    new winston.transports.File({
+    new transports.File({
       level: 'info',
-      json: false,
-      handleExceptions: true,
+      format: format.combine(
+        format.timestamp({
+          format: 'YYYY-MM-DD HH:mm:ss'
+      }),
+        format.json()
+      ),
+      exitOnError: false,
       maxSize: 512000,
       maxFiles: 5,
       filename: `${__dirname}/log-de-aplicacion.log`,
       prettyPrint: object => { return JSON.stringify(object) }
     }),
-    new winston.transports.Console({
+    new transports.Console({
       level: 'debug',
-      handleExceptions: true,
-      json: false,
-      colorize: true,
-      prettyPrint: object => { return JSON.stringify(object) }
+      exitOnError: false,
+      format: format.combine(
+        format.colorize(),
+        format.simple()),
     })
   ]
 })
 
-module.exports = logger;
+// logging morgan info
+logger.stream = {
+  write: function(message, encoding){
+    logger.info('morgan',{request: message.trim()});
+  }
+}
+
+// logging params request
+logger.saveParams = (req, rest, next ) => {
+  let params = req.body;
+  if(req.body.password) params = {...params, password:'***'}
+  logger.info('params',{params,url:req.url});
+  next();
+}
+
+module.exports = {
+  logger
+};

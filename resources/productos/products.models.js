@@ -2,24 +2,24 @@ const mongoose = require('mongoose');
 
 // TODO: añadir mas validaciones
 const productoSchema = new mongoose.Schema({
-  titulo: {
+  name: {
     type: String,
-    required: [true, 'Producto debe tener un titulo']
+    required: [true, 'The product should have a name']
   },
-  precio: {
+  price: {
     type: Number,
     min: 0,
-    required: [true, 'Producto debe tener un precio']
+    required: [true, 'The product should have a price']
   },
-  moneda: {
+  currency: {
     type: String,
     maxlength: 3,
     minlength: 3,
-    required: [true, 'Producto debe tener una moneda']
+    required: [true, 'The product should have a currency']
   },
   owner: {
     type: String,
-    required: [true, 'Producto debe tener un owner']
+    required: [true, 'The product should have an owner']
   },
 });
 

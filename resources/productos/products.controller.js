@@ -8,24 +8,28 @@ function getAll() {
   return Product.find({});
 }
 
-function getOne(id) {
-  return Product.findById(id);
-}
-
 function update(id, product) {
-   let result =  Product.findOneAndUpdate({ _id: id},
-    product, { new: true });
-    return result;
+  return Product.findOneAndUpdate({ _id: id}, product,  {new: false, useFindAndModify: false});
 }
 
+function getOne(filter) {
+    let product = Product.findOne(filter);
+    return product;
+}
+
+function getById(id) {
+    let product = Product.findById(id);
+    return product;
+}
 function remove(id) {
-  return Producto.findOneAndDelete(id);
+  return Product.findOneAndDelete(id);
 }
 
 module.exports = {
   create,
   getAll,
   getOne,
+  getById,
   update,
   remove,
 }

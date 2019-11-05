@@ -34,7 +34,6 @@ router.post('/', userValidate, (req, res) => {
 router.put('/:id', auth, async(req, res) => {
   try {
     let userSearched = await userController.getById(req.params.id);
-    console.log( userSearched);
     if (userSearched === null ) {
       res.status(404).json({"message": "User doesn't exist"})
     } else {
@@ -82,7 +81,7 @@ router.post('/login', async (req, res)  => {
       }
     }
   } catch (error) {
-    logger.error('login error',{ error })
+    logger.error('login error',{ error: error.toString() })
     res.status(500).json({"message": "An unknown error occurred."});
   }
 

@@ -5,7 +5,9 @@ const jwt = require('jsonwebtoken');
 const userValidate = require('./users.validate');
 const {logger} = require('../lib/logger');
 const auth = require('../../resources/lib/authentication');
-const userController = require('./users.controller')
+const userController = require('./users.controller');
+const { getRandomInt } = require('../lib/utils');
+const sendSMS = require('../lib/sms-sender');
 const router = express.Router();
 
 router.get('/', auth, async(req, res) => {
@@ -21,8 +23,10 @@ router.get('/', auth, async(req, res) => {
 router.post('/register', userValidate, async(req, res) => {
   try {
     const hashPassword = bcrypt.hashSync(req.body.password, 10);
-    let newUser = { ...req.body, password: hashPassword, verified: false };
+    let verificationCode = getRandomInt(100000,999999);
+    let newUser = { ...req.body, password: hashPassword, verificationCode,verified: false };
     await userController.create(newUser);
+    sendSMS(req.body.cellphone,verificationCode);
     res.json({message: 'User registerd succesfully'});
   } catch (error) {
     logger.error('error registering user', { error: error.toString() });

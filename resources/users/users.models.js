@@ -23,6 +23,15 @@ const userSchema = new mongoose.Schema({
     required: [true, 'User should have a status'],
     default: false
   },
+  cellphone: {
+    type: Number,
+    required: [true, 'User should have a cellphone'],
+    default: false
+  },
+  verificationCode: {
+    type: Number,
+    required: [true, 'User should have a verification code'],
+  },
 });
 
 module.exports = mongoose.model('user', userSchema);

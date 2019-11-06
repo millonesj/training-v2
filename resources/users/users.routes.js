@@ -27,12 +27,35 @@ router.post('/register', userValidate, async(req, res) => {
     let newUser = { ...req.body, password: hashPassword, verificationCode,verified: false };
     await userController.create(newUser);
     sendSMS(req.body.cellphone,verificationCode);
-    res.json({message: 'User registerd succesfully'});
+    res.json({message: 'User registerd succesfully. We have sent your verification code to your cell phone'});
   } catch (error) {
     logger.error('error registering user', { error: error.toString() });
     res.status(500).json({"message": "An unknown error occurred."});
   }
 })
+
+router.post('/verify', async (req, res)  => {
+  try {
+    const username = req.body.username;
+    const verificationCode = parseInt(req.body.verificationCode);
+    const userSearched = await userController.getOne({username});
+    if (userSearched === null) {
+      res.json({message:"user doesn't exist"})
+
+    } else {
+      if (userSearched.verificationCode === verificationCode) {
+        await userController.update(userSearched._id, {verified:true});
+        res.json({"message": "Account verified succesfully"})
+      } else {
+        res.status(401).send({"message": 'Incorrect code'});
+      }
+    }
+  } catch (error) {
+    logger.error('login error',{ error: error.toString() })
+    res.status(500).json({"message": "An unknown error occurred."});
+  }
+
+});
 
 router.post('/', userValidate, (req, res) => {
   try {

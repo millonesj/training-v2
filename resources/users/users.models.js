@@ -14,6 +14,15 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'User should have a password']
   },
+  email: {
+    type: String,
+    required: [true, 'User should have a email']
+  },
+  verified: {
+    type: Boolean,
+    required: [true, 'User should have a status'],
+    default: false
+  },
 });
 
 module.exports = mongoose.model('user', userSchema);

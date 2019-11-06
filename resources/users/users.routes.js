@@ -18,6 +18,18 @@ router.get('/', auth, async(req, res) => {
   }
 });
 
+router.post('/register', userValidate, async(req, res) => {
+  try {
+    const hashPassword = bcrypt.hashSync(req.body.password, 10);
+    let newUser = { ...req.body, password: hashPassword, verified: false };
+    await userController.create(newUser);
+    res.json({message: 'User registerd succesfully'});
+  } catch (error) {
+    logger.error('error registering user', { error: error.toString() });
+    res.status(500).json({"message": "An unknown error occurred."});
+  }
+})
+
 router.post('/', userValidate, (req, res) => {
   try {
     const hashPassword = bcrypt.hashSync(req.body.password, 10);

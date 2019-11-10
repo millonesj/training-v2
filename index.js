@@ -42,6 +42,20 @@ app.get('/', (req, res) => {
   res.status(200).send('Welcome Krowders');
 })
 
+app.use( (req, res, next ) => {
+  const error = new Error('Not Found');
+  error.status = 400;
+  next(error)
+})
+
+app.use( (error, req, res, next ) => {
+  res.status(error.status || 500 )
+  res.json({
+    error: {
+      message: error.message
+    }
+  })
+})
 
 // SON EJEMPLOS
 // logger.log('log', 'Hello distributed log files!');

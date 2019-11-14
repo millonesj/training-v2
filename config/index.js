@@ -1,12 +1,15 @@
 let config = {}
 
 const baseConfig = {
-  PORT: 3001
+  PORT: 3002,
+  ACCOUNT_SID: 'AC7f91e2e7e2efb708da014885075b655f', // Your Account SID from www.twilio.com/console
+  AUTH_TOKEN: '7dfd6058c7f78d9aec39710305b3e955',   // Your Auth Token from www.twilio.com/console
+  FROM_CELLPHONE: '+12026576655'
 }
 
 const developConfig = {
   SECRET_KEY: 'SECRET_KEY',
-  EXPIRES_IN: '24h', 
+  EXPIRES_IN: '24h',
 }
 
 const productionConfig = {

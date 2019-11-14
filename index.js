@@ -8,6 +8,7 @@ const mongoose = require('mongoose')
 
 const productsRoutes = require('./resources/productos/products.routes');
 const usersRoutes = require('./resources/users/users.routes');
+const errorHandler = require('./resources/lib/errorHandler');
 
 const app = express();
 
@@ -41,6 +42,9 @@ app.use('/users', usersRoutes);
 app.get('/', (req, res) => {
   res.status(200).send('Welcome Krowders');
 })
+
+app.use(errorHandler.processDBerrors);
+app.use(errorHandler.catchResolver);
 
 app.use( (req, res, next ) => {
   const error = new Error('Not Found');

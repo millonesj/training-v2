@@ -3,7 +3,7 @@ const UserSchema = Joi.object({
   name: Joi.string().pattern(/^[a-zA-Z\s]+$/).min(2).max(100).required(),
   username: Joi.string().alphanum().min(2).max(50).required(),
   password: Joi.string().min(6).max(20).required(),
-  email: Joi.string().email(),
+  email: Joi.string().email().required(),
   cellphone: Joi.number().min(900000000).max(999999999).required(),
 });
 
